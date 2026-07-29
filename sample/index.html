@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>연몽의 개발일기</title>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Pretendard", Arial, sans-serif;
+}
+
+body {
+    background: #f8f7ff;
+    color: #333;
+}
+
+
+/* 상단 메뉴 */
+
+header {
+    background: linear-gradient(135deg, #9b8cff, #ff9edb);
+    color:white;
+    padding:40px 20px;
+    text-align:center;
+}
+
+header h1 {
+    font-size:40px;
+    margin-bottom:10px;
+}
+
+header p {
+    font-size:18px;
+}
+
+
+
+/* 전체 영역 */
+
+.container {
+    width:90%;
+    max-width:1000px;
+    margin:40px auto;
+}
+
+
+
+/* 카드 */
+
+.card {
+
+    background:white;
+    border-radius:20px;
+    padding:30px;
+    margin-bottom:30px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.08);
+
+    transition:0.3s;
+}
+
+
+.card:hover {
+    transform:translateY(-5px);
+}
+
+
+
+h2 {
+    color:#7658ff;
+    margin-bottom:20px;
+}
+
+
+
+/* 버튼 */
+
+.btn {
+
+    display:inline-block;
+    margin-top:20px;
+
+    padding:12px 25px;
+
+    background:#7658ff;
+    color:white;
+
+    border-radius:30px;
+
+    text-decoration:none;
+
+    transition:0.3s;
+}
+
+
+.btn:hover {
+
+    background:#ff72c6;
+
+}
+
+
+
+/* 개발일기 */
+
+.day {
+
+    border-left:5px solid #9b8cff;
+
+    padding-left:20px;
+
+    margin-bottom:25px;
+
+}
+
+
+.day h3 {
+
+    margin-bottom:10px;
+
+}
+
+
+
+.tag {
+
+    display:inline-block;
+
+    background:#eee8ff;
+
+    color:#7658ff;
+
+    padding:5px 12px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+}
+
+
+
+/* footer */
+
+footer {
+
+    text-align:center;
+
+    padding:30px;
+
+    color:#777;
+
+}
+
+
+
+/* 모바일 */
+
+@media(max-width:600px){
+
+header h1{
+    font-size:30px;
+}
+
+.card{
+    padding:20px;
+}
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🌙 연몽의 개발일기</h1>
+
+<p>
+처음부터 만들어가는 나만의 개발 기록 공간
+</p>
+
+</header>
+
+
+
+<div class="container">
+
+
+<!-- 소개 -->
+
+<section class="card">
+
+<h2>👋 About Me</h2>
+
+<p>
+안녕하세요.
+<br><br>
+
+법률 사무 업무를 하면서 새로운 분야인
+웹 개발에 도전하고 있는 개발자 꿈나무입니다.
+
+<br><br>
+
+매일 조금씩 배우고,
+직접 만들면서 성장하는 과정을 기록합니다.
+
+</p>
+
+
+<a class="btn" href="#diary">
+개발일기 보기
+</a>
+
+
+</section>
+
+
+
+
+
+<!-- 기술 -->
+
+<section class="card">
+
+
+<h2>🛠 Skills</h2>
+
+
+<span class="tag">HTML</span>
+
+<span class="tag">CSS</span>
+
+<span class="tag">JavaScript</span>
+
+<span class="tag">GitHub</span>
+
+
+</section>
+
+
+
+
+
+<!-- 개발일기 -->
+
+
+<section class="card" id="diary">
+
+
+<h2>📖 개발일기</h2>
+
+
+
+<div class="day">
+
+<h3>Day 1. HTML 첫 시작 🚀</h3>
+
+<p>
+
+처음으로 웹페이지 구조를 만들었다.
+
+<br>
+
+HTML 태그의 역할과
+웹사이트가 만들어지는 기본 구조를 배웠다.
+
+</p>
+
+</div>
+
+
+
+
+<div class="day">
+
+<h3>Day 2. CSS 디자인 입히기 🎨</h3>
+
+<p>
+
+단순한 글 페이지에서 벗어나
+색상과 카드 디자인을 적용했다.
+
+<br>
+
+조금씩 내가 원하는 화면이 만들어지는 과정이 재미있다.
+
+</p>
+
+</div>
+
+
+
+
+<div class="day">
+
+<h3>Day 3. GitHub 업로드하기 🌱</h3>
+
+<p>
+
+작성한 코드를 저장하고
+나만의 개발 기록을 관리하기 시작했다.
+
+</p>
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+<!-- 프로젝트 -->
+
+
+<section class="card">
+
+
+<h2>💻 Projects</h2>
+
+
+<p>
+
+📌 프로젝트 1
+
+<br>
+
+나만의 개발 기록 사이트 만들기
+
+<br><br>
+
+
+📌 프로젝트 2
+
+<br>
+
+법률 정보를 쉽게 정리하는 웹 서비스 만들기
+
+</p>
+
+
+<a class="btn" href="https://github.com/" target="_blank">
+
+GitHub 방문
+
+</a>
+
+
+
+</section>
+
+
+
+
+
+
+<!-- 연락 -->
+
+
+<section class="card">
+
+
+<h2>📮 Contact</h2>
+
+
+<p>
+
+Email :
+example@email.com
+
+<br><br>
+
+GitHub :
+github.com/example
+
+</p>
+
+
+</section>
+
+
+
+</div>
+
+
+
+
+<footer>
+
+© 2026 Yeonmong Dev Diary
+
+</footer>
+
+
+</body>
+</html>
