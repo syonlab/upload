@@ -78,3 +78,75 @@ h1 {
     height: 395px;
     max-width: 100%;
 }
+.diary {
+    margin: 40px 0;
+}
+#account {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #ffdaf1;
+    border: 1px solid #f4cffc;
+    border-radius: 18px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: bold;
+}
+#account {
+    display: none;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff5fb;
+    border-radius: 20px;
+    width: 300px;
+    text-align: center;
+}
+/* 날씨 결과 상자 전체 스타일 */
+.weather-result-container {
+    display: flex; /* 아이콘과 텍스트를 가로로 배치 */
+    align-items: center;
+    justify-content: center;
+    gap: 20px; /* 아이콘과 텍스트 사이 간격 */
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.8); /* 반투명 흰색 배경 */
+    border-radius: 15px; /* 모서리 둥글게 */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* 은은한 그림자 */
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 날씨 아이콘 스타일 & 회전 애니메이션 */
+.weather-icon {
+    font-size: 4rem; /* 아이콘 크기 */
+    animation: rotateIcon 10s linear infinite; /* 10초마다 무한 회전 */
+}
+
+/* 회전 애니메이션 정의 */
+@keyframes rotateIcon {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* 날씨 정보(온도, 상태)를 세로로 배치 */
+.weather-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* 온도 스타일 (크고 굵게) */
+.weather-temp {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 상태(비/안옴) 스타일 */
+.weather-status {
+    font-size: 1.1rem;
+    color: #666;
+    margin-top: 5px;
+}
