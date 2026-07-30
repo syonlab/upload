@@ -51,8 +51,10 @@ button:hover {
         ),
         url("../images/background.jpg");
 
-    background-size: cover;
+    background-size: 500px 500px;
+    background-repeat: no-repeat;
     background-position: center;
+    background-color: #ffffff;
 }
 .main-box {
     background: rgba(255, 255, 255, 0.7);
