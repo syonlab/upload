@@ -1,0 +1,154 @@
+/* 기본 설정 */
+body {
+    /* 💡 font-family를 Gowun Dodum(고운돋움)으로 변경! */
+    font-family: 'Gowun Dodum', sans-serif;
+    background-color: #f7f5fb;
+    color: #333;
+    margin: 0;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 550px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #5c32a8;
+    margin-bottom: 25px;
+}
+
+/* 입력 폼 카통 카드 */
+.form-card {
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(92, 50, 168, 0.08);
+}
+
+.form-card h2 {
+    font-size: 0.95rem;
+    color: #666;
+    margin: 12px 0 6px 0;
+}
+
+.form-card h2:first-child {
+    margin-top: 0;
+}
+
+/* 💡 input, textarea, button 모두 고운돋움 폰트로 통일 */
+input[type="text"], textarea, button {
+    font-family: 'Gowun Dodum', sans-serif; /* 입력창과 버튼 안의 폰트 고운돋움으로 설정 */
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0d9f0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s;
+}
+input[type="text"]:focus, textarea:focus {
+    border-color: #8c52ff;
+}
+
+textarea {
+    height: 200px;
+    resize: vertical;
+}
+
+/* 등록 버튼 */
+#addBtn {
+    width: 100%;
+    margin-top: 16px;
+    padding: 14px;
+    background-color: #8c52ff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+#addBtn:hover {
+    background-color: #733dd9;
+}
+
+#addBtn:active {
+    transform: scale(0.98);
+}
+
+.divider {
+    border: 0;
+    height: 1px;
+    background: #e0d9f0;
+    margin: 30px 0;
+}
+
+/* 방명록 카드 스타일 */
+.guest-card {
+    background: #ffffff;
+    padding: 18px 20px;
+    border-radius: 14px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    position: relative;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.05rem;
+    color: #444;
+}
+
+.card-date {
+    font-size: 0.8rem;
+    color: #aaa;
+}
+
+.card-message {
+    margin: 8px 0 16px 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #555;
+    white-space: pre-wrap; /* 줄바꿈 유지 */
+}
+
+/* 삭제 버튼 */
+.delete-btn {
+    background: #fff0f0;
+    color: #ff4757;
+    border: 1px solid #ffe0e0;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.delete-btn:hover {
+    background: #ffe0e0;
+}
+
+.empty-msg {
+    text-align: center;
+    color: #888;
+    font-size: 0.95rem;
+    margin-top: 20px;
+}

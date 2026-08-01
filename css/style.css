@@ -150,3 +150,21 @@ h1 {
     color: #666;
     margin-top: 5px;
 }
+/* 이동 버튼 스타일 */
+.nav-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #ff5ce4; /* 기존 방명록의 보라색 포인트 컬러 */
+    color: #ffffff;
+    text-decoration: none; /* 링크 밑줄 제거 */
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(140, 82, 255, 0.2);
+    transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+    background-color: #cc79ec;
+    transform: translateY(-2px); /* 살짝 올라가는 효과 */
+}
