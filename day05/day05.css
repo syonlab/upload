@@ -1,0 +1,132 @@
+/* 글로벌 애플 스타일 설정 */
+body {
+    /* 🍏 애플 시스템 폰트 & Pretendard 설정 (가독성과 깔끔함 극대화) */
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+    line-height: 1.6;
+    letter-spacing: -0.01em; /* 애플 특유의 자간 */
+    background-color: #f5f5f7; /* 애플 고유의 연한 회색 배경 */
+    color: #1d1d1f; /* 완전한 검정 대신 눈이 편한 차콜 */
+    margin: 0;
+    -webkit-font-smoothing: antialiased; /* 폰트 렌더링을 매끄럽게 */
+}
+
+.container {
+    max-width: 800px; /* 시선 집중을 위해 폭을 단정하게 조절 */
+    margin: 80px auto;
+    padding: 0 24px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 42px;
+    font-weight: 700;
+    color: #1d1d1f; /* 제목도 얌전하고 고급스러운 컬러로 변경 */
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #86868b; /* 애플 서버 스펙 문구 색상 */
+    margin-bottom: 60px;
+    font-size: 19px;
+    font-weight: 400;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1d1d1f;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+}
+
+/* 1. 카드 기본 상태 (밑으로 80px 내려두고 투명하게 처리) */
+.card {
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 32px;
+    margin: 24px 0;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    
+    /* 기존보다 밑으로 훨씬 더 많이(80px) 내려놓아서 스크롤 감이 확 느껴지게 변경! */
+    opacity: 0;
+    transform: translateY(80px) scale(0.95);
+    
+    /* 등장 시간을 0.6초 -> 0.9초로 살짝 늘려 부드럽고 확실하게 나타나도록 설정 */
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.3s ease;
+}
+
+/* 2. 스크롤 내려서 등장했을 때 */
+.card.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* 3. 등장한 카드에 마우스 올렸을 때 (크게 떠오르기) */
+.card.show:hover {
+    transform: translateY(-8px) scale(1.025);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+}
+.card h3 {
+    color: #06c; /* 애플 공식 서브 포인트 블루 (또는 원하는 보라색 #7c3aed 유지 가능) */
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+/* 개발일기 타이핑 커서 효과 */
+.diary {
+    line-height: 1.8;
+    background: #ffffff;
+    padding: 36px;
+    border-radius: 22px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    color: #333336;
+    min-height: 120px; /* 💡 글자가 적히기 전 틀이 줄어들지 않도록 최소 높이 지정 */
+    white-space: pre-wrap; /* 💡 줄바꿈(\n) 입력이 그대로 표현되도록 설정 */
+}
+
+/* 타이핑 중일 때 깜빡이는 커서 */
+.diary.typing::after {
+    content: '|';
+    animation: blink 0.7s infinite;
+    color: #0071e3; /* 애플 블루 색상 커서 */
+    font-weight: bold;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* 메인페이지 돌아가기 버튼 (알약 모양 Apple 스타일) */
+.back-home {
+    display: inline-block;
+    margin-top: 40px;
+    background: #0071e3; /* 애플 시그니처 블루 (기존 보라색을 원하시면 #7c3aed) */
+    color: #ffffff;
+    padding: 14px 28px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 980px; /* 완전한 Capsule 라운딩 */
+    transition: all 0.2s ease;
+}
+
+.back-home:hover {
+    background: #0077ed;
+    transform: scale(1.02); /* 부담스럽지 않은 살짝 확대 */
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+}
+
+/* 입력창 및 버튼 통일감을 위한 세팅 */
+input, textarea, button {
+    font-family: inherit;
+}
