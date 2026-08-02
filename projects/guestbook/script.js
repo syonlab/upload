@@ -25,7 +25,7 @@ const firebaseConfig = {
 };
 
 // 👑 홈페이지 주인(시온 님) 전용 마스터 비밀번호 (원하는 비밀번호로 변경 가능!)
-const MASTER_PASSWORD = "syonmaster123"; 
+const MASTER_PASSWORD = "syon0107"; // 🔑 마스터 비밀번호 (관리자용) 
 
 // Firebase 및 Firestore 데이터베이스 초기화
 const app = initializeApp(firebaseConfig);
@@ -118,9 +118,9 @@ async function renderGuestbook() {
     }
 }
 
-// 5. 삭제 기능 (작성자 비번 또는 주인 마스터 비번)
+// 5. 삭제 기능 (작성자 비번 또는 마스터 비번)
 window.deleteEntry = async function(id, originalPassword) {
-    const inputPassword = prompt("비밀번호를 입력하세요 (작성자 또는 주인 전용):");
+    const inputPassword = prompt("비밀번호를 입력하세요 (작성시 입력한 비밀번호):");
     if (!inputPassword) return;
 
     if (inputPassword === originalPassword || inputPassword === MASTER_PASSWORD) {
@@ -134,9 +134,9 @@ window.deleteEntry = async function(id, originalPassword) {
     }
 };
 
-// 6. 수정 기능 (작성자 비번 또는 주인 마스터 비번)
+// 6. 수정 기능 (작성자 비번 또는 마스터 비번)
 window.editEntry = async function(id, originalPassword) {
-    const inputPassword = prompt("비밀번호를 입력하세요 (작성자 또는 주인 전용):");
+    const inputPassword = prompt("비밀번호를 입력하세요 (작성시 입력한 비밀번호):");
     if (!inputPassword) return;
 
     if (inputPassword === originalPassword || inputPassword === MASTER_PASSWORD) {

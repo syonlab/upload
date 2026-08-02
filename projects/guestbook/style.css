@@ -134,20 +134,49 @@ textarea {
     white-space: pre-wrap; /* 줄바꿈 유지 */
 }
 
-/* 삭제 버튼 */
+/* 카드 하단 액션 버튼 영역 정렬 */
+.card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px; /* 버튼 사이 간격 */
+    margin-top: 12px;
+}
+
+/* ✏️ 수정 & 🗑️ 삭제 공통 버튼 스타일 (애플 미니멀 룩) */
+.edit-btn, .delete-btn {
+    font-family: 'Gowun Dodum', sans-serif; /* 또는 'Pretendard', sans-serif */
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* 🗑️ 삭제 버튼 스타일 (은은한 붉은 톤) */
 .delete-btn {
     background: #fff0f0;
     color: #ff4757;
     border: 1px solid #ffe0e0;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: background 0.2s;
 }
 
 .delete-btn:hover {
     background: #ffe0e0;
+    transform: translateY(-1px);
+}
+
+/* ✏️ 수정 버튼 스타일 (은은한 회색/보라 톤) */
+.edit-btn {
+    background: #f0ebf8;
+    color: #5c32a8;
+    border: 1px solid #e0d9f0;
+}
+
+.edit-btn:hover {
+    background: #e4daf3;
+    transform: translateY(-1px);
 }
 
 .empty-msg {
@@ -155,4 +184,56 @@ textarea {
     color: #888;
     font-size: 0.95rem;
     margin-top: 20px;
+}
+
+
+/* 1. 컨테이너에 기준점 설정 */
+.container {
+    max-width: 550px; /* 기존 컨테이너 너비 유지 */
+    margin: 60px auto;
+    padding: 0 20px;
+    position: relative; /* 💡 버튼 위치의 기준점이 됩니다 */
+}
+
+/* 2. 컨테이너 기준으로 배치되는 홈 버튼 */
+.home-btn {
+    position: absolute;
+    top: -45px; /* 제목 위쪽 여백 공간에 배치 */
+    left: 20px; /* 컨테이너 왼쪽 라인에 딱 맞춤 */
+    
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    padding: 6px 14px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #1d1d1f;
+    text-decoration: none;
+    
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 980px;
+    
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.2s ease;
+}
+
+.home-btn:hover {
+    background: #ffffff;
+    transform: translateY(-2px);
+    color: #0071e3;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 모바일 모니터 화면 분기 처리 */
+@media (max-width: 600px) {
+    .container {
+        margin-top: 50px;
+    }
+    .home-btn {
+        top: -40px;
+        left: 20px;
+    }
 }
