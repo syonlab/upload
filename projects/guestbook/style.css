@@ -45,7 +45,11 @@ input[type="text"], textarea, button {
     font-family: 'Gowun Dodum', sans-serif; /* 입력창과 버튼 안의 폰트 고운돋움으로 설정 */
 }
 
-input[type="text"], textarea {
+input[type="text"], input[type="password"], textarea, button {
+    font-family: 'Gowun Dodum', sans-serif;
+}
+
+input[type="text"], input[type="password"], textarea {
     width: 100%;
     padding: 12px;
     border: 1px solid #e0d9f0;
@@ -55,10 +59,10 @@ input[type="text"], textarea {
     outline: none;
     transition: border-color 0.2s;
 }
-input[type="text"]:focus, textarea:focus {
+
+input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
     border-color: #8c52ff;
 }
-
 textarea {
     height: 200px;
     resize: vertical;
