@@ -57,7 +57,7 @@ if (button) {
                 name: name,
                 password: password,
                 message: message,
-                comments: [], // 💬 새 글 저장 시 빈 댓글 배열 생성
+                comments: [],
                 createdAt: serverTimestamp()
             });
 
@@ -96,19 +96,30 @@ async function renderGuestbook() {
             const id = docSnap.id;
             const date = entry.createdAt ? new Date(entry.createdAt.toDate()).toLocaleDateString() : "방금 전";
 
-            // 💡 예외 처리: 기존 방명록 글에 comments 필드가 없는 경우 빈 배열로 처리
             const comments = entry.comments || [];
 
             // 댓글 목록 HTML 생성
-            let commentsHTML = comments.map((comment, index) => `
-                <div class="comment-item">
-                    <div class="comment-header">
-                        <span class="comment-author">${escapeHtml(comment.author)}</span>
-                        <button class="comment-del-btn" onclick="deleteComment('${id}', ${index})">✕</button>
+            let commentsHTML = comments.map((comment, index) => {
+                const isOwner = comment.isOwner; // 주인장 댓글 여부
+                const ownerClass = isOwner ? "owner-comment" : "";
+                const ownerBadge = isOwner ? `<span class="owner-badge">👑 주인장</span>` : "";
+
+                return `
+                    <div class="comment-item ${ownerClass}">
+                        <div class="comment-header">
+                            <div>
+                                <span class="comment-author">${escapeHtml(comment.author)}</span>
+                                ${ownerBadge}
+                            </div>
+                            <div class="comment-btn-group">
+                                <button class="comment-edit-btn" onclick="editComment('${id}', ${index}, '${comment.password}')">✏️</button>
+                                <button class="comment-del-btn" onclick="deleteComment('${id}', ${index}, '${comment.password}')">✕</button>
+                            </div>
+                        </div>
+                        <div class="comment-content" id="comment-text-${id}-${index}">${escapeHtml(comment.content)}</div>
                     </div>
-                    <div class="comment-content">${escapeHtml(comment.content)}</div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
 
             html += `
                 <div class="guest-card">
@@ -129,6 +140,7 @@ async function renderGuestbook() {
                         </div>
                         <div class="comment-form">
                             <input type="text" id="comment-author-${id}" placeholder="닉네임" class="comment-input author">
+                            <input type="password" id="comment-password-${id}" placeholder="비밀번호" class="comment-input password">
                             <input type="text" id="comment-text-${id}" placeholder="댓글을 입력하세요..." class="comment-input text">
                             <button class="comment-submit-btn" onclick="addComment('${id}')">등록</button>
                         </div>
@@ -144,70 +156,108 @@ async function renderGuestbook() {
     }
 }
 
-// 💬 5. 댓글 작성 기능 (모듈 호환 window 등록)
+// 💬 5. 댓글 작성 기능
 window.addComment = async function(docId) {
     const authorInput = document.getElementById(`comment-author-${docId}`);
+    const passwordInput = document.getElementById(`comment-password-${docId}`);
     const textInput = document.getElementById(`comment-text-${docId}`);
 
     const author = authorInput.value.trim();
+    const password = passwordInput.value.trim();
     const content = textInput.value.trim();
 
-    if (!author || !content) {
-        alert("닉네임과 댓글 내용을 모두 입력해 주세요! 💬");
+    if (!author || !password || !content) {
+        alert("닉네임, 비밀번호, 댓글 내용을 모두 입력해 주세요! 💬");
         return;
     }
+
+    // 💡 닉네임이 시온/주인장 이거나 마스터 비밀번호 입력 시 '주인장 댓글'로 인식!
+    const isOwner = (password === MASTER_PASSWORD) || (author === "시온" || author === "주인장");
 
     try {
         const postRef = doc(db, "guestbook", docId);
         await updateDoc(postRef, {
             comments: arrayUnion({
                 author: author,
+                password: password,
                 content: content,
+                isOwner: isOwner,
                 createdAt: new Date().toISOString()
             })
         });
 
         authorInput.value = "";
+        passwordInput.value = "";
         textInput.value = "";
-        renderGuestbook(); // 화면 목록 갱신
+        renderGuestbook();
     } catch (e) {
         console.error("댓글 등록 실패: ", e);
         alert("댓글 등록에 실패했습니다.");
     }
 };
 
-// 💬 6. 댓글 삭제 기능 (마스터 비번 확인)
-window.deleteComment = async function(docId, commentIndex) {
-    const inputPassword = prompt("댓글을 삭제하시겠습니까? (관리자 비밀번호 입력):");
+// 💬 6. 댓글 수정 기능 (작성자 비번 또는 마스터 비번)
+window.editComment = async function(docId, commentIndex, originalPassword) {
+    const inputPassword = prompt("댓글 작성 시 설정한 비밀번호를 입력하세요:");
     if (!inputPassword) return;
 
-    if (inputPassword === MASTER_PASSWORD) {
-        try {
-            const postRef = doc(db, "guestbook", docId);
-            const querySnapshot = await getDocs(query(collection(db, "guestbook")));
-            
-            // 해당 글 찾아서 특정 인덱스 댓글 지우기
-            querySnapshot.forEach(async (docSnap) => {
-                if (docSnap.id === docId) {
-                    let comments = docSnap.data().comments || [];
-                    comments.splice(commentIndex, 1);
+    if (inputPassword === originalPassword || inputPassword === MASTER_PASSWORD) {
+        const currentText = document.getElementById(`comment-text-${docId}-${commentIndex}`).innerText;
+        const newContent = prompt("수정할 댓글 내용을 입력하세요:", currentText);
 
-                    await updateDoc(postRef, { comments: comments });
-                    alert("댓글이 삭제되었습니다.");
-                    renderGuestbook();
-                }
-            });
-        } catch (e) {
-            console.error("댓글 삭제 실패: ", e);
+        if (newContent && newContent.trim() !== "") {
+            try {
+                const querySnapshot = await getDocs(query(collection(db, "guestbook")));
+                querySnapshot.forEach(async (docSnap) => {
+                    if (docSnap.id === docId) {
+                        let comments = docSnap.data().comments || [];
+                        comments[commentIndex].content = newContent.trim();
+
+                        await updateDoc(doc(db, "guestbook", docId), { comments: comments });
+                        alert("댓글이 수정되었습니다. ✨");
+                        renderGuestbook();
+                    }
+                });
+            } catch (e) {
+                console.error("댓글 수정 실패: ", e);
+            }
         }
     } else {
         alert("비밀번호가 일치하지 않습니다! ❌");
     }
 };
 
-// 7. 삭제 기능 (작성자 비번 또는 마스터 비번)
+// 💬 7. 댓글 삭제 기능 (작성자 비번 또는 마스터 비번)
+window.deleteComment = async function(docId, commentIndex, originalPassword) {
+    const inputPassword = prompt("댓글 작성 시 설정한 비밀번호를 입력하세요:");
+    if (!inputPassword) return;
+
+    if (inputPassword === originalPassword || inputPassword === MASTER_PASSWORD) {
+        if (confirm("댓글을 삭제하시겠습니까?")) {
+            try {
+                const querySnapshot = await getDocs(query(collection(db, "guestbook")));
+                querySnapshot.forEach(async (docSnap) => {
+                    if (docSnap.id === docId) {
+                        let comments = docSnap.data().comments || [];
+                        comments.splice(commentIndex, 1);
+
+                        await updateDoc(doc(db, "guestbook", docId), { comments: comments });
+                        alert("댓글이 삭제되었습니다.");
+                        renderGuestbook();
+                    }
+                });
+            } catch (e) {
+                console.error("댓글 삭제 실패: ", e);
+            }
+        }
+    } else {
+        alert("비밀번호가 일치하지 않습니다! ❌");
+    }
+};
+
+// 8. 방명록 글 삭제 기능
 window.deleteEntry = async function(id, originalPassword) {
-    const inputPassword = prompt("비밀번호를 입력하세요 (작성시 입력한 비밀번호):");
+    const inputPassword = prompt("비밀번호를 입력하세요:");
     if (!inputPassword) return;
 
     if (inputPassword === originalPassword || inputPassword === MASTER_PASSWORD) {
@@ -221,9 +271,9 @@ window.deleteEntry = async function(id, originalPassword) {
     }
 };
 
-// 8. 수정 기능 (작성자 비번 또는 마스터 비번)
+// 9. 방명록 글 수정 기능
 window.editEntry = async function(id, originalPassword) {
-    const inputPassword = prompt("비밀번호를 입력하세요 (작성시 입력한 비밀번호):");
+    const inputPassword = prompt("비밀번호를 입력하세요:");
     if (!inputPassword) return;
 
     if (inputPassword === originalPassword || inputPassword === MASTER_PASSWORD) {
