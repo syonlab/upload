@@ -237,6 +237,7 @@ textarea {
         left: 20px;
     }
 }
+
 /* 💬 댓글 전체 영역 */
 .comment-section {
     margin-top: 16px;
@@ -244,13 +245,20 @@ textarea {
     border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-/* 댓글 개별 아이템 */
+/* 일반 댓글 아이템 */
 .comment-item {
     background: #f9f9fb;
     border-radius: 10px;
     padding: 10px 12px;
     margin-bottom: 8px;
     font-size: 0.88rem;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+/* 👑 주인장 댓글 특별 스타일 (연한 보라/애플 블루 톤) */
+.comment-item.owner-comment {
+    background: #f0f5ff;
+    border: 1px solid #d0e1fd;
 }
 
 .comment-header {
@@ -266,18 +274,33 @@ textarea {
     font-size: 0.82rem;
 }
 
-.comment-del-btn {
-    background: none;
-    border: none;
-    color: #a1a1a6;
-    cursor: pointer;
-    font-size: 11px;
-    padding: 0 4px;
+/* 👑 주인장 뱃지 스타일 */
+.owner-badge {
+    background: #0071e3;
+    color: #ffffff;
+    font-size: 0.68rem;
+    padding: 2px 6px;
+    border-radius: 6px;
+    margin-left: 4px;
+    font-weight: 500;
 }
 
-.comment-del-btn:hover {
-    color: #ff4757;
+.comment-btn-group {
+    display: flex;
+    gap: 4px;
 }
+
+.comment-edit-btn, .comment-del-btn {
+    background: none;
+    border: none;
+    color: #8e8e93;
+    cursor: pointer;
+    font-size: 11px;
+    padding: 0 3px;
+}
+
+.comment-edit-btn:hover { color: #0071e3; }
+.comment-del-btn:hover { color: #ff4757; }
 
 .comment-content {
     color: #424245;
@@ -295,8 +318,8 @@ textarea {
 .comment-input {
     border: 1px solid #e5e5ea;
     border-radius: 8px;
-    padding: 6px 10px;
-    font-size: 0.82rem;
+    padding: 6px 8px;
+    font-size: 0.8rem;
     outline: none;
     background: #ffffff;
 }
@@ -305,13 +328,9 @@ textarea {
     border-color: #0071e3;
 }
 
-.comment-input.author {
-    width: 28%;
-}
-
-.comment-input.text {
-    flex: 1;
-}
+.comment-input.author { width: 22%; }
+.comment-input.password { width: 22%; }
+.comment-input.text { flex: 1; }
 
 .comment-submit-btn {
     background: #0071e3;
@@ -319,10 +338,27 @@ textarea {
     border: none;
     border-radius: 8px;
     padding: 6px 12px;
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     cursor: pointer;
     white-space: nowrap;
     transition: background 0.2s;
+}
+
+.comment-submit-btn:hover {
+    background: #0077ed;
+}
+
+/* 모바일 분기 */
+@media (max-width: 600px) {
+    .comment-form {
+        flex-wrap: wrap;
+    }
+    .comment-input.author, .comment-input.password {
+        width: 47%;
+    }
+    .comment-input.text {
+        width: 70%;
+    }
 }
 
 .comment-submit-btn:hover {
