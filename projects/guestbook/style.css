@@ -237,3 +237,94 @@ textarea {
         left: 20px;
     }
 }
+/* 💬 댓글 전체 영역 */
+.comment-section {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* 댓글 개별 아이템 */
+.comment-item {
+    background: #f9f9fb;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 0.88rem;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.comment-author {
+    font-weight: 600;
+    color: #1d1d1f;
+    font-size: 0.82rem;
+}
+
+.comment-del-btn {
+    background: none;
+    border: none;
+    color: #a1a1a6;
+    cursor: pointer;
+    font-size: 11px;
+    padding: 0 4px;
+}
+
+.comment-del-btn:hover {
+    color: #ff4757;
+}
+
+.comment-content {
+    color: #424245;
+    line-height: 1.4;
+    white-space: pre-wrap;
+}
+
+/* 댓글 입력 창 */
+.comment-form {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.comment-input {
+    border: 1px solid #e5e5ea;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 0.82rem;
+    outline: none;
+    background: #ffffff;
+}
+
+.comment-input:focus {
+    border-color: #0071e3;
+}
+
+.comment-input.author {
+    width: 28%;
+}
+
+.comment-input.text {
+    flex: 1;
+}
+
+.comment-submit-btn {
+    background: #0071e3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+}
+
+.comment-submit-btn:hover {
+    background: #0077ed;
+}
