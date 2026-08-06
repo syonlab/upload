@@ -149,6 +149,7 @@ async function renderGuestbook() {
                             </div>
                         </div>
                     </div>
+                </div> <!-- 💡 원인: 누락되어 있었던 guest-card 닫는 태그! -->
             `;
         });
 
