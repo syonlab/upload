@@ -255,10 +255,10 @@ textarea {
     border: 1px solid rgba(0, 0, 0, 0.03);
 }
 
-/* 👑 주인장 댓글 특별 스타일 (연한 보라/애플 블루 톤) */
+/* 👑 주인장 댓글 특별 스타일 */
 .comment-item.owner-comment {
-    background: #f0f5ff;
-    border: 1px solid #d0e1fd;
+    background: #f3effa;
+    border: 1px solid #e0d5f5;
 }
 
 .comment-header {
@@ -276,7 +276,7 @@ textarea {
 
 /* 👑 주인장 뱃지 스타일 */
 .owner-badge {
-    background: #0071e3;
+    background: #6c5ce7; /* 또는 은은한 보라색을 원하시면 #7b61ff */
     color: #ffffff;
     font-size: 0.68rem;
     padding: 2px 6px;
@@ -308,46 +308,67 @@ textarea {
     white-space: pre-wrap;
 }
 
-/* 댓글 입력 창 */
+/* 💬 댓글 입력 창 (2줄 레이아웃) */
 .comment-form {
     display: flex;
-    gap: 6px;
-    margin-top: 10px;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
 }
 
+/* 1번째 줄: 닉네임, 비밀번호 */
+.comment-form-top {
+    display: flex;
+    gap: 8px;
+}
+
+.comment-form-top .comment-input {
+    flex: 1; /* 닉네임과 비밀번호가 반반씩 넓게 차지 */
+}
+
+/* 2번째 줄: 댓글 내용, 등록 버튼 */
+.comment-form-bottom {
+    display: flex;
+    gap: 8px;
+}
+
+.comment-input.text {
+    flex: 1; /* 댓글 내용창이 가로 전체로 널찍해짐 */
+}
+
+/* 공통 입력창 스타일 */
 .comment-input {
     border: 1px solid #e5e5ea;
-    border-radius: 8px;
-    padding: 6px 8px;
-    font-size: 0.8rem;
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 0.85rem;
     outline: none;
     background: #ffffff;
+    transition: all 0.2s ease;
 }
 
 .comment-input:focus {
     border-color: #0071e3;
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
 }
-
-.comment-input.author { width: 22%; }
-.comment-input.password { width: 22%; }
-.comment-input.text { flex: 1; }
 
 .comment-submit-btn {
     background: #0071e3;
     color: white;
     border: none;
-    border-radius: 8px;
-    padding: 6px 12px;
-    font-size: 0.8rem;
+    border-radius: 12px;
+    padding: 10px 18px;
+    font-size: 0.85rem;
+    font-weight: 500;
     cursor: pointer;
     white-space: nowrap;
-    transition: background 0.2s;
+    transition: background 0.2s, transform 0.1s;
 }
 
 .comment-submit-btn:hover {
     background: #0077ed;
+    transform: translateY(-1px);
 }
-
 /* 모바일 분기 */
 @media (max-width: 600px) {
     .comment-form {
