@@ -10,10 +10,11 @@ import {
     doc, 
     query, 
     orderBy, 
-    serverTimestamp 
+    serverTimestamp,
+    arrayUnion
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// 2. 시온 님이 직접 발급받으신 Firebase 설정 정보 🎯
+// 2. 시온 님이 발급받으신 Firebase 설정 정보
 const firebaseConfig = {
     apiKey: "AIzaSyAgseOOUy38gg8QyqDVyavhpl0XiXPrRAQ",
     authDomain: "syon-guestbook.firebaseapp.com",
@@ -24,8 +25,8 @@ const firebaseConfig = {
     measurementId: "G-PM3FG7VKV3"
 };
 
-// 👑 홈페이지 주인(시온 님) 전용 마스터 비밀번호 (원하는 비밀번호로 변경 가능!)
-const MASTER_PASSWORD = "syon0107"; // 🔑 마스터 비밀번호 (관리자용) 
+// 👑 홈페이지 주인 전용 마스터 비밀번호
+const MASTER_PASSWORD = "syon0107"; 
 
 // Firebase 및 Firestore 데이터베이스 초기화
 const app = initializeApp(firebaseConfig);
@@ -52,11 +53,11 @@ if (button) {
         }
 
         try {
-            // Firestore 'guestbook' 컬렉션에 저장
             await addDoc(collection(db, "guestbook"), {
                 name: name,
                 password: password,
                 message: message,
+                comments: [], // 💬 새 글 저장 시 빈 댓글 배열 생성
                 createdAt: serverTimestamp()
             });
 
@@ -73,7 +74,7 @@ if (button) {
     });
 }
 
-// 4. Firestore에서 방명록 목록 불러와 화면에 그리기
+// 4. Firestore에서 방명록 및 댓글 목록 불러와 화면에 그리기
 async function renderGuestbook() {
     const guestbook = document.getElementById("guestbook");
     if (!guestbook) return;
@@ -81,7 +82,6 @@ async function renderGuestbook() {
     guestbook.innerHTML = "<p class='empty-msg'>방명록을 불러오는 중... ⏳</p>";
 
     try {
-        // 최신순 정렬 Query
         const q = query(collection(db, "guestbook"), orderBy("createdAt", "desc"));
         const querySnapshot = await getDocs(q);
 
@@ -96,6 +96,20 @@ async function renderGuestbook() {
             const id = docSnap.id;
             const date = entry.createdAt ? new Date(entry.createdAt.toDate()).toLocaleDateString() : "방금 전";
 
+            // 💡 예외 처리: 기존 방명록 글에 comments 필드가 없는 경우 빈 배열로 처리
+            const comments = entry.comments || [];
+
+            // 댓글 목록 HTML 생성
+            let commentsHTML = comments.map((comment, index) => `
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="comment-author">${escapeHtml(comment.author)}</span>
+                        <button class="comment-del-btn" onclick="deleteComment('${id}', ${index})">✕</button>
+                    </div>
+                    <div class="comment-content">${escapeHtml(comment.content)}</div>
+                </div>
+            `).join('');
+
             html += `
                 <div class="guest-card">
                     <div class="card-header">
@@ -106,6 +120,18 @@ async function renderGuestbook() {
                     <div class="card-actions">
                         <button class="edit-btn" onclick="editEntry('${id}', '${entry.password}')">수정 ✏️</button>
                         <button class="delete-btn" onclick="deleteEntry('${id}', '${entry.password}')">삭제 🗑️</button>
+                    </div>
+
+                    <!-- 💬 댓글 영역 -->
+                    <div class="comment-section">
+                        <div class="comment-list">
+                            ${commentsHTML}
+                        </div>
+                        <div class="comment-form">
+                            <input type="text" id="comment-author-${id}" placeholder="닉네임" class="comment-input author">
+                            <input type="text" id="comment-text-${id}" placeholder="댓글을 입력하세요..." class="comment-input text">
+                            <button class="comment-submit-btn" onclick="addComment('${id}')">등록</button>
+                        </div>
                     </div>
                 </div>
             `;
@@ -118,7 +144,68 @@ async function renderGuestbook() {
     }
 }
 
-// 5. 삭제 기능 (작성자 비번 또는 마스터 비번)
+// 💬 5. 댓글 작성 기능 (모듈 호환 window 등록)
+window.addComment = async function(docId) {
+    const authorInput = document.getElementById(`comment-author-${docId}`);
+    const textInput = document.getElementById(`comment-text-${docId}`);
+
+    const author = authorInput.value.trim();
+    const content = textInput.value.trim();
+
+    if (!author || !content) {
+        alert("닉네임과 댓글 내용을 모두 입력해 주세요! 💬");
+        return;
+    }
+
+    try {
+        const postRef = doc(db, "guestbook", docId);
+        await updateDoc(postRef, {
+            comments: arrayUnion({
+                author: author,
+                content: content,
+                createdAt: new Date().toISOString()
+            })
+        });
+
+        authorInput.value = "";
+        textInput.value = "";
+        renderGuestbook(); // 화면 목록 갱신
+    } catch (e) {
+        console.error("댓글 등록 실패: ", e);
+        alert("댓글 등록에 실패했습니다.");
+    }
+};
+
+// 💬 6. 댓글 삭제 기능 (마스터 비번 확인)
+window.deleteComment = async function(docId, commentIndex) {
+    const inputPassword = prompt("댓글을 삭제하시겠습니까? (관리자 비밀번호 입력):");
+    if (!inputPassword) return;
+
+    if (inputPassword === MASTER_PASSWORD) {
+        try {
+            const postRef = doc(db, "guestbook", docId);
+            const querySnapshot = await getDocs(query(collection(db, "guestbook")));
+            
+            // 해당 글 찾아서 특정 인덱스 댓글 지우기
+            querySnapshot.forEach(async (docSnap) => {
+                if (docSnap.id === docId) {
+                    let comments = docSnap.data().comments || [];
+                    comments.splice(commentIndex, 1);
+
+                    await updateDoc(postRef, { comments: comments });
+                    alert("댓글이 삭제되었습니다.");
+                    renderGuestbook();
+                }
+            });
+        } catch (e) {
+            console.error("댓글 삭제 실패: ", e);
+        }
+    } else {
+        alert("비밀번호가 일치하지 않습니다! ❌");
+    }
+};
+
+// 7. 삭제 기능 (작성자 비번 또는 마스터 비번)
 window.deleteEntry = async function(id, originalPassword) {
     const inputPassword = prompt("비밀번호를 입력하세요 (작성시 입력한 비밀번호):");
     if (!inputPassword) return;
@@ -134,7 +221,7 @@ window.deleteEntry = async function(id, originalPassword) {
     }
 };
 
-// 6. 수정 기능 (작성자 비번 또는 마스터 비번)
+// 8. 수정 기능 (작성자 비번 또는 마스터 비번)
 window.editEntry = async function(id, originalPassword) {
     const inputPassword = prompt("비밀번호를 입력하세요 (작성시 입력한 비밀번호):");
     if (!inputPassword) return;
@@ -157,6 +244,7 @@ window.editEntry = async function(id, originalPassword) {
 
 // HTML 악성 태그 방지
 function escapeHtml(text) {
+    if (!text) return "";
     return text
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
