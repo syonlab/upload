@@ -133,19 +133,22 @@ async function renderGuestbook() {
                         <button class="delete-btn" onclick="deleteEntry('${id}', '${entry.password}')">삭제 🗑️</button>
                     </div>
 
-                    <!-- 💬 댓글 영역 -->
+                    <!-- 💬 댓글 영역 (2줄 배치 구조) -->
                     <div class="comment-section">
                         <div class="comment-list">
                             ${commentsHTML}
                         </div>
                         <div class="comment-form">
-                            <input type="text" id="comment-author-${id}" placeholder="닉네임" class="comment-input author">
-                            <input type="password" id="comment-password-${id}" placeholder="비밀번호" class="comment-input password">
-                            <input type="text" id="comment-text-${id}" placeholder="댓글을 입력하세요..." class="comment-input text">
-                            <button class="comment-submit-btn" onclick="addComment('${id}')">등록</button>
+                            <div class="comment-form-top">
+                                <input type="text" id="comment-author-${id}" placeholder="닉네임" class="comment-input author">
+                                <input type="password" id="comment-password-${id}" placeholder="비밀번호" class="comment-input password">
+                            </div>
+                            <div class="comment-form-bottom">
+                                <input type="text" id="comment-text-${id}" placeholder="댓글을 입력하세요..." class="comment-input text">
+                                <button class="comment-submit-btn" onclick="addComment('${id}')">등록</button>
+                            </div>
                         </div>
                     </div>
-                </div>
             `;
         });
 
