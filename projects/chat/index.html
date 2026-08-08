@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYON 채팅</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+<body>
+
+    <!-- 🤖 제미나이 사이드바 -->
+    <aside class="gemini-sidebar">
+        <div class="sidebar-top">
+            <button class="menu-btn">☰</button>
+            <button class="new-chat-btn">+ 새 대화</button>
+        </div>
+        <div class="sidebar-history">
+            <div class="history-item"> 새 채팅 </div>
+            <div class="history-item"> 채팅 검색 </div>
+            <div class="history-item"> 이미지 </div>
+            <div class="history-item"> 라이브러리 </div>
+            ----------------------
+            <div class="history-item active"> 업무 </div>
+            <div class="history-item"> 엑셀함수 </div>
+        </div>
+        <div class="sidebar-bottom">
+            <div class="user-profile">
+                👤 <span id="sidebar-nickname">사용자</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 💻 채팅 창 전체 Container -->
+    <div class="chat-container">
+
+        <!-- 📊 엑셀 상단 리본바 -->
+        <div class="excel-top-bar">
+            <div class="excel-ribbon-tabs">
+                <span>파일</span>
+                <span class="active">홈</span>
+                <span>삽입</span>
+                <span>페이지 레이아웃</span>
+                <span>수식</span>
+                <span>데이터</span>
+                <span>검토</span>
+                <span>보기</span>
+            </div>
+            <div class="excel-fx-bar">
+                <div class="cell-name">A1</div>
+                <span class="fx-icon">fx</span>
+                <div class="fx-input">=SUM(A1:A10)</div>
+            </div>
+        </div>
+
+        <!-- 헤더 영역 -->
+        <header class="chat-header">
+            <div>
+                <h2>💬 SYON 채팅</h2>
+                <div class="user-status">현재 접속: <strong id="current-nickname-display">-</strong></div>
+            </div>
+            <div class="header-actions">
+                <select id="theme-select" class="theme-select-btn" onchange="changeTheme(this.value)">
+                    <option value="purple">💜 기본 (퍼플)</option>
+                    <option value="gemini">🤖 제미나이 모드</option>
+                    <option value="excel">📊 엑셀 (업무모드)</option>
+                </select>
+                <button class="change-nick-btn" onclick="openNickModal(true)">계정 변경</button>
+            </div>
+        </header>
+
+        <!-- 메시지 내역 영역 -->
+        <main class="chat-messages" id="chat-messages">
+            <div class="message-system">
+                <span>👋 방에 입장하셨습니다! 자유롭게 수다를 나눠보세요.</span>
+            </div>
+        </main>
+
+        <!-- 하단 메시지 입력 영역 -->
+        <footer class="chat-input-area">
+            <!-- 📷 숨겨진 이미지 파일 입력창 -->
+            <input type="file" id="image-input" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+
+            <form id="chat-form" onsubmit="event.preventDefault(); sendMessage();">
+                <div class="input-wrapper">
+                    <!-- ➕ 공통 플러스(+) 버튼 (사진 첨부) -->
+                    <button type="button" class="gemini-add-btn" title="사진 첨부" onclick="document.getElementById('image-input').click()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                    </button>
+                    
+                    <input type="text" id="message-input" placeholder="메시지를 입력하세요" autocomplete="off">
+                    
+                    <div class="input-actions">
+                        <button type="button" class="gemini-mic-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+                        </button>
+                        <button type="submit" class="send-btn">
+                            <svg viewBox="0 0 24 24" class="gemini-send-icon"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+                            <span class="default-send-text">전송</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </footer>
+    </div>
+
+    <!-- 닉네임 및 비밀번호 설정 모달 팝업 -->
+    <div class="modal-overlay" id="nick-modal" style="display: none;">
+        <div class="modal-card">
+            <h3>프로필 설정</h3>
+            <p>모바일/PC 어디서든 동일한 닉네임과 비밀번호를 입력하면 본인 메시지를 관리할 수 있습니다.</p>
+            <input type="text" id="modal-nick-input" placeholder="닉네임 입력 (예: 개발자SYON)" maxlength="12">
+            <input type="password" id="modal-pass-input" placeholder="비밀번호 입력 (본인 인증용)" maxlength="20">
+            <button class="modal-confirm-btn" onclick="saveNickname()">입장하기</button>
+        </div>
+    </div>
+
+    <script src="chat.js"></script>
+</body>
+</html>

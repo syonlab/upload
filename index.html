@@ -3,76 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="css/style.css">
-    <title>SYON</title>
+    <title>SYON 개발일지</title>
 </head>
 <body class="main-page">
-    <div class="main-box">
-        <h1>💜 SYON 개발일지 💜</h1>
-        <p>개발 기록</p>
+
+    <div class="main-container">
+        <!-- 헤더 영역 -->
+        <header class="main-header">
+            <h1>💜 SYON HomePage 💜</h1>
+            <p class="subtitle">개발기록</p>
+            
+            <!-- 상단 주요 기능 바로가기 네비게이션 -->
+            <div class="top-nav">
+                <a href="projects/guestbook/index.html" class="nav-btn guestbook-btn">
+                    💌 방명록
+                </a>
+                <!-- 🗨️ 채팅 버튼 추가 위치 (경로는 실제 파일 위치에 맞게 수정해주세요) -->
+                <a href="projects/chat/index.html" class="nav-btn chat-btn">
+                    🗨️ 채팅
+                </a>
+                <a href="sample/index.html" class="nav-btn sample-btn">
+                    ✨ 샘플
+                </a>
+            </div>
+        </header>
+
+        <!-- 개발일지 목록 테이블 카드 -->
+        <main class="log-card">
+            <h2>📅 개발일지 목록</h2>
+            <div class="table-wrapper">
+                <table class="log-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">날짜 (Day)</th>
+                            <th style="width: 55%;">주요 학습 내용</th>
+                            <th style="width: 25%;">바로가기</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="day-badge">Day 01</span></td>
+                            <td class="log-title">HTML 시작</td>
+                            <td><a href="day01/index.html" class="table-btn">이동하기 ➔</a></td>
+                        </tr>
+                        <tr>
+                            <td><span class="day-badge">Day 02</span></td>
+                            <td class="log-title">유튜브 링크 넣고 꾸미기</td>
+                            <td><a href="day02/index.html" class="table-btn">이동하기 ➔</a></td>
+                        </tr>
+                        <tr>
+                            <td><span class="day-badge">Day 03</span></td>
+                            <td class="log-title">링크와 페이지 이동 & JS 첫걸음</td>
+                            <td><a href="day03/index.html" class="table-btn">이동하기 ➔</a></td>
+                        </tr>
+                        <tr>
+                            <td><span class="day-badge">Day 04</span></td>
+                            <td class="log-title">방명록 만들기</td>
+                            <td><a href="day04/index.html" class="table-btn">이동하기 ➔</a></td>
+                        </tr>
+                        <tr>
+                            <td><span class="day-badge">Day 05</span></td>
+                            <td class="log-title">멋진 디자인으로 꾸미기</td>
+                            <td><a href="day05/index.html" class="table-btn">이동하기 ➔</a></td>
+                        </tr>
+                        <tr>
+                            <td><span class="day-badge">Day 06</span></td>
+                            <td class="log-title">채팅방 만들기</td>
+                            <td><a href="day06/index.html" class="table-btn">이동하기 ➔</a></td>   
+                        <!-- 💡 새로운 Day가 늘어나면 여기에 <tr>...</tr> 추가해 주시면 됩니다! -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
     </div>
 
-<h2>Day 01</h2>
-
-<p>HTML 시작</p>
-
-<a href="day01/index.html">
-    <button>Day 01 가기</button>
-</a>
-
-<br><br>
-
-<h2>Day 02</h2>
-
-<p>유튜브 링크 넣고 꾸미기</p>
-
-<a href="day02/index.html">
-    <button>Day 02 가기</button>
-</a>
-
-<br><br>
-
-<h2>Day 03</h2>
-
-<p>링크와 페이지 이동</p>
-
-<a href="day03/index.html">
-    <button>Day 03 가기</button>
-</a>
-<br><br>
-
-<h2>Day 04</h2>
-
-<p>방명록 만들기</p>
-
-<a href="day04/index.html">
-    <button>Day 04 가기</button>
-</a>
-<br><br>
-
-<h2>Day 05</h2>
-
-<p>멋진 디자인으로 꾸미기</p>
-
-<a href="day05/index.html">
-    <button>Day 05 가기</button>
-</a>
-
-<br><br><br><br>
-
-<div style="text-align: center; margin-top: 30px;">
-    <!-- 링크 경로(href)는 이동하고 싶은 실제 폴더 위치에 맞게 수정해 주세요! -->
-    <a href="projects/guestbook/index.html" class="nav-btn">
-        방명록 구경 가기(작성해주세요!!🩷) ➔
-    </a>
-</div>
-
-<br><br>
-
-<a href="sample/index.html">
-    <button>샘플 보기</button>
-</a>
-<br><br><br><br>
-
 </body>
+</html>

@@ -1,0 +1,517 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f3f0ff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* 엑셀 상단바 & 사이드바 기본 숨김 */
+.excel-top-bar, .gemini-sidebar {
+    display: none;
+}
+
+/* 💻 채팅 전체 창 (기본 퍼플) */
+.chat-container {
+    width: 100%;
+    max-width: 800px;
+    height: 85vh;
+    max-height: 800px;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 12px 35px rgba(139, 92, 246, 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* 드래그 앤 드롭 전용 스타일 */
+.chat-container.drag-over {
+    border: 3px dashed #8b5cf6 !important;
+    opacity: 0.85;
+}
+
+/* 헤더 */
+.chat-header {
+    background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+    color: white;
+    padding: 20px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header h2 {
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+}
+
+.user-status {
+    font-size: 0.85rem;
+    opacity: 0.95;
+}
+
+.change-nick-btn {
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 8px 16px;
+    border-radius: 14px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: all 0.2s;
+}
+
+.change-nick-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* 메시지 내역 영역 */
+.chat-messages {
+    flex: 1;
+    padding: 28px;
+    overflow-y: auto;
+    background: #fdfbff;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* 시스템 알림 */
+.message-system {
+    text-align: center;
+    margin: 10px 0;
+}
+.message-system span {
+    background: #f0ebf8;
+    color: #7c3aed;
+    font-size: 0.82rem;
+    padding: 6px 18px;
+    border-radius: 20px;
+}
+
+/* 메시지 그룹 */
+.message-group {
+    display: flex;
+    flex-direction: column;
+    max-width: 70%;
+}
+
+.message-group.other { align-self: flex-start; }
+.message-group.my { align-self: flex-end; }
+
+.sender-name {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 4px;
+    margin-left: 4px;
+    font-weight: 500;
+}
+
+.message-content {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.bubble {
+    padding: 12px 18px;
+    border-radius: 18px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.other .bubble {
+    background: #f0ebf8;
+    color: #2d2d2d;
+    border-top-left-radius: 4px;
+}
+
+.my .bubble {
+    background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+    color: white;
+    border-top-right-radius: 4px;
+}
+
+.time {
+    font-size: 0.72rem;
+    color: #999;
+    white-space: nowrap;
+}
+
+/* 🗑️ 삭제 버튼 스타일 */
+.delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 2px 4px;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.delete-btn:hover {
+    opacity: 1;
+}
+
+/* 상대방 메시지 하단 Gemini 반응 버튼 기본 숨김 */
+.gemini-actions {
+    display: none;
+}
+
+/* 🖼️ 이미지 전용 스타일 */
+.chat-image {
+    max-width: 280px;
+    max-height: 280px;
+    border-radius: 12px;
+    object-fit: cover;
+    margin-top: 4px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* 하단 입력 창 */
+.chat-input-area {
+    padding: 18px 24px;
+    background: #ffffff;
+    border-top: 1px solid #f0ebf8;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+#message-input {
+    flex: 1;
+    padding: 12px 18px;
+    border: 1px solid #e2d9f3;
+    border-radius: 24px;
+    outline: none;
+    font-size: 0.95rem;
+}
+
+/* ➕ 플러스 버튼 (모든 모드 공통 표시) */
+.gemini-add-btn {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #f0ebf8;
+    border: none;
+    color: #7c3aed;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.gemini-add-btn:hover {
+    background: #e2d9f3;
+}
+
+/* 마이크 버튼 기본 숨김 */
+.gemini-mic-btn {
+    display: none;
+}
+
+.send-btn {
+    background: #8b5cf6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 24px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.default-send-text { display: inline; }
+.gemini-send-icon { display: none; }
+
+/* 모달 팝업 */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 999;
+}
+
+.modal-card {
+    background: white;
+    padding: 28px;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.modal-card h3 { color: #8b5cf6; margin-bottom: 8px; }
+.modal-card p { font-size: 0.88rem; color: #666; margin-bottom: 18px; line-height: 1.4; }
+
+#modal-nick-input, #modal-pass-input {
+    width: 100%; padding: 12px; border: 1px solid #ddd;
+    border-radius: 14px; font-size: 0.95rem; margin-bottom: 12px; text-align: center; outline: none;
+}
+
+#modal-nick-input:focus, #modal-pass-input:focus {
+    border-color: #8b5cf6;
+}
+
+.modal-confirm-btn {
+    background: #8b5cf6; color: white; border: none;
+    padding: 12px; border-radius: 20px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 4px;
+}
+
+/* 드롭다운 버튼 */
+.theme-select-btn {
+    background: rgba(255, 255, 255, 0.25);
+    color: white; border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 6px 10px; border-radius: 12px; font-size: 0.8rem; cursor: pointer;
+}
+.theme-select-btn option { background: #ffffff; color: #333333; }
+
+
+/* ==========================================
+   🤖 1. 제미나이 (Gemini) 테마
+   ========================================== */
+
+body.theme-gemini {
+    background-color: #f0f4f9 !important;
+    padding: 0;
+}
+
+body.theme-gemini .gemini-sidebar {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 260px;
+    min-width: 260px;
+    height: 100vh;
+    background: #ffffff;
+    border-right: 1px solid #e3e3e3;
+    padding: 16px;
+}
+
+.sidebar-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.menu-btn {
+    background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 8px; border-radius: 50%; color: #444746;
+}
+
+.new-chat-btn {
+    background: #dde3ea; border: none; padding: 10px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; color: #444746; cursor: pointer;
+}
+
+.sidebar-history { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+
+.history-item {
+    padding: 10px 14px; border-radius: 20px; font-size: 0.85rem; color: #444746; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.history-item.active { background: #e8def8; color: #1d192b; font-weight: 600; }
+
+.sidebar-bottom { padding-top: 12px; border-top: 1px solid #e3e3e3; font-size: 0.85rem; color: #444746; }
+
+body.theme-gemini .chat-container {
+    flex: 1; max-width: 100% !important; height: 100vh !important; max-height: 100vh !important; border-radius: 0 !important; box-shadow: none !important; background: #f0f4f9 !important;
+}
+
+body.theme-gemini .chat-header {
+    background: transparent !important; color: #1f1f1f !important; border-bottom: none !important; padding: 16px 32px !important;
+}
+body.theme-gemini .chat-header h2 { color: #1f1f1f !important; font-size: 1.1rem; }
+body.theme-gemini .user-status { color: #5f6368 !important; }
+
+body.theme-gemini .theme-select-btn, 
+body.theme-gemini .change-nick-btn {
+    background: #ffffff !important; color: #3c4043 !important; border: 1px solid #dadce0 !important; border-radius: 18px !important;
+}
+
+body.theme-gemini .chat-messages {
+    background: #f0f4f9 !important; max-width: 850px; width: 100%; margin: 0 auto; padding: 20px;
+}
+
+body.theme-gemini .message-system span { background: #e8f0fe !important; color: #1a73e8 !important; }
+body.theme-gemini .message-group { max-width: 85%; }
+
+body.theme-gemini .other .bubble { background: transparent !important; color: #1f1f1f !important; padding: 4px 0 !important; font-size: 1rem !important; }
+body.theme-gemini .my .bubble { background: #e9eef6 !important; border: none !important; color: #1f1f1f !important; border-radius: 20px !important; padding: 12px 20px !important; }
+
+body.theme-gemini .chat-image { max-width: 350px; max-height: 350px; border-radius: 16px; }
+
+body.theme-gemini .other .gemini-actions { display: flex; gap: 8px; margin-top: 10px; color: #444746; }
+body.theme-gemini .gemini-actions button { background: none; border: none; cursor: pointer; padding: 6px; border-radius: 50%; color: #444746; }
+body.theme-gemini .gemini-actions button:hover { background: #e3e3e3; }
+
+body.theme-gemini .chat-input-area { background: #f0f4f9 !important; border-top: none !important; padding: 10px 20px 24px 20px !important; max-width: 850px; width: 100%; margin: 0 auto; }
+
+body.theme-gemini .input-wrapper {
+    background: #ffffff; border-radius: 28px; padding: 8px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid #e3e3e3;
+}
+
+body.theme-gemini #message-input { background: transparent !important; border: none !important; padding: 10px 12px !important; }
+
+body.theme-gemini .gemini-add-btn { background: #f0f4f9; color: #444746; }
+body.theme-gemini .gemini-mic-btn { display: flex !important; justify-content: center; align-items: center; width: 36px; height: 36px; border-radius: 50%; background: transparent; border: none; color: #444746; cursor: pointer; }
+
+body.theme-gemini .send-btn {
+    background: #1f1f1f !important; color: #ffffff !important; width: 32px !important; height: 32px !important; min-width: 32px !important; border-radius: 50% !important; padding: 0 !important; display: flex !important; justify-content: center !important; align-items: center !important;
+}
+
+body.theme-gemini .default-send-text { display: none; }
+body.theme-gemini .gemini-send-icon { display: block; width: 16px; height: 16px; fill: #ffffff; }
+
+
+/* ==========================================
+   📊 2. 엑셀 (월급루팡 모드) 테마
+   ========================================== */
+
+body.theme-excel {
+    background-color: #e6e6e6 !important; padding: 0 !important; display: block !important;
+}
+
+body.theme-excel .gemini-sidebar { display: none !important; }
+
+body.theme-excel .excel-top-bar {
+    display: block !important; background: #f3f2f1; border-bottom: 1px solid #d4d4d4; font-size: 0.8rem; color: #333; width: 100%;
+}
+
+.excel-ribbon-tabs { display: flex; background: #107c41; padding-left: 10px; white-space: nowrap; }
+.excel-ribbon-tabs span { color: #ffffff; padding: 6px 14px; font-size: 0.8rem; cursor: pointer; opacity: 0.85; }
+.excel-ribbon-tabs span.active { background: #ffffff; color: #107c41; font-weight: bold; opacity: 1; }
+
+.excel-fx-bar { display: flex; align-items: center; background: #ffffff; padding: 4px 8px; border-bottom: 1px solid #d4d4d4; gap: 8px; }
+.cell-name { width: 45px; text-align: center; background: #f3f2f1; border: 1px solid #d4d4d4; padding: 2px 0; font-weight: bold; font-size: 0.75rem; color: #555; }
+.fx-icon { font-weight: bold; font-style: italic; color: #777; font-size: 0.85rem; }
+.fx-input { flex: 1; font-family: Consolas, monospace; font-size: 0.8rem; color: #107c41; }
+
+body.theme-excel .chat-container {
+    width: 100% !important; max-width: 100% !important; height: calc(100vh - 65px) !important; max-height: none !important; background: #ffffff !important; border-radius: 0px !important; border: none !important; box-shadow: none !important;
+}
+
+body.theme-excel.drag-over .chat-container { border: 3px dashed #107c41 !important; }
+
+body.theme-excel .chat-header {
+    background: #f3f2f1 !important; color: #333333 !important; border-bottom: 1px solid #d4d4d4 !important; padding: 6px 16px !important;
+}
+body.theme-excel .chat-header h2 { font-size: 0.95rem !important; color: #333333 !important; font-weight: normal; }
+body.theme-excel .user-status { color: #666666 !important; }
+
+body.theme-excel .theme-select-btn, 
+body.theme-excel .change-nick-btn {
+    background: #ffffff !important; color: #333333 !important; border: 1px solid #ababab !important; border-radius: 2px !important; font-size: 0.75rem !important; padding: 3px 8px !important;
+}
+
+body.theme-excel .chat-messages {
+    background-color: #ffffff !important;
+    background-image: linear-gradient(#e5e5e5 1px, transparent 1px), linear-gradient(90deg, #e5e5e5 1px, transparent 1px) !important;
+    background-size: 100% 28px, 120px 100% !important; padding: 10px !important;
+}
+
+body.theme-excel .other .bubble { background: #ffffff !important; border: 1px solid #d4d4d4 !important; color: #222222 !important; border-radius: 0px !important; padding: 6px 12px !important; }
+body.theme-excel .my .bubble { background: #e2efda !important; border: 1px solid #a8d08d !important; color: #375623 !important; border-radius: 0px !important; padding: 6px 12px !important; }
+
+body.theme-excel .chat-image { max-width: 200px; max-height: 200px; border-radius: 0px; border: 1px solid #d4d4d4; }
+
+body.theme-excel .chat-input-area { background: #f3f2f1 !important; border-top: 1px solid #d4d4d4 !important; padding: 8px 12px !important; }
+body.theme-excel #message-input { background: #ffffff !important; border: 1px solid #107c41 !important; border-radius: 0px !important; font-size: 0.85rem !important; padding: 8px 12px !important; }
+
+body.theme-excel .gemini-add-btn { background: #ffffff; border: 1px solid #107c41; color: #107c41; border-radius: 0px; height: 33px; width: 33px; }
+
+body.theme-excel .send-btn {
+    background: #107c41 !important; border-radius: 0px !important; font-size: 0.85rem !important; padding: 0 16px !important; height: auto !important; width: auto !important;
+}
+/* 본인 메시지 수정/삭제 버튼 영역 */
+.msg-actions-owner {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.82rem;
+    padding: 2px 4px;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.action-btn:hover {
+    opacity: 1;
+}
+
+/* 수정 표시 태그 */
+.edited-tag {
+    font-size: 0.72rem;
+    opacity: 0.7;
+    margin-left: 4px;
+}
+
+/* 인라인 수정 입력창 스타일 */
+.edit-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px;
+    border-radius: 12px;
+    border: 1px solid #8b5cf6;
+}
+
+.edit-input {
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.edit-btns {
+    display: flex;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
+.edit-save-btn, .edit-cancel-btn {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    border: none;
+}
+
+.edit-save-btn {
+    background: #8b5cf6;
+    color: white;
+}
+
+.edit-cancel-btn {
+    background: #e5e7eb;
+    color: #374151;
+}

@@ -1,6 +1,9 @@
 /* ==========================================
    1. 기본 설정 & 폰트
    ========================================== */
+/* ==========================================
+   1. 기본 설정 & 폰트
+   ========================================== */
 body {
     font-family: 'Gowun Dodum', sans-serif;
     background-color: #f7f5fb;
@@ -11,7 +14,6 @@ body {
     justify-content: center;
 }
 
-/* 입력창 및 버튼 폰트 통일 */
 input[type="text"], input[type="password"], textarea, button {
     font-family: 'Gowun Dodum', sans-serif;
 }
@@ -24,7 +26,7 @@ input[type="text"], input[type="password"], textarea, button {
     max-width: 550px;
     margin: 60px auto 0 auto;
     padding: 0 20px;
-    position: relative; /* 상단 홈 버튼 위치 기준점 */
+    position: relative;
     box-sizing: border-box;
 }
 
@@ -35,7 +37,6 @@ h1 {
     margin-bottom: 25px;
 }
 
-/* 상단 홈 버튼 */
 .home-btn {
     position: absolute;
     top: -45px;
@@ -98,12 +99,12 @@ input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
     border-color: #8c52ff;
 }
 
+
 textarea {
-    height: 200px;
+    height: 180px;
     resize: vertical;
 }
 
-/* 방명록 등록 메인 버튼 */
 #addBtn {
     width: 100%;
     margin-top: 16px;
@@ -120,6 +121,8 @@ textarea {
 
 #addBtn:hover { background-color: #733dd9; }
 #addBtn:active { transform: scale(0.98); }
+#addBtn:hover { background-color: #733dd9; }
+#addBtn:active { transform: scale(0.98); }
 
 .divider {
     border: 0;
@@ -128,6 +131,9 @@ textarea {
     margin: 30px 0;
 }
 
+/* ==========================================
+   4. 방명록 게시글 카드 (Guest Card)
+   ========================================== */
 /* ==========================================
    4. 방명록 게시글 카드 (Guest Card)
    ========================================== */
@@ -164,11 +170,13 @@ textarea {
     line-height: 1.5;
     color: #555;
     white-space: pre-wrap;
+    white-space: pre-wrap;
 }
 
 .card-actions {
     display: flex;
     justify-content: flex-end;
+    gap: 8px;
     gap: 8px;
     margin-top: 12px;
 }
@@ -190,12 +198,14 @@ textarea {
     border: 1px solid #ffe0e0;
 }
 .delete-btn:hover { background: #ffe0e0; transform: translateY(-1px); }
+.delete-btn:hover { background: #ffe0e0; transform: translateY(-1px); }
 
 .edit-btn {
     background: #f0ebf8;
     color: #5c32a8;
     border: 1px solid #e0d9f0;
 }
+.edit-btn:hover { background: #e4daf3; transform: translateY(-1px); }
 .edit-btn:hover { background: #e4daf3; transform: translateY(-1px); }
 
 .empty-msg {
@@ -206,7 +216,7 @@ textarea {
 }
 
 /* ==========================================
-   5. 💬 댓글 리스트 & 입력창 (2줄 레이아웃)
+   5. 💬 댓글 리스트 & 뱃지
    ========================================== */
 .comment-section {
     margin-top: 16px;
@@ -214,7 +224,6 @@ textarea {
     border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-/* 일반 댓글 목록 아이템 */
 .comment-item {
     background: #f9f9fb;
     border-radius: 10px;
@@ -224,26 +233,12 @@ textarea {
     border: 1px solid rgba(0, 0, 0, 0.03);
 }
 
-/* 👑 주인장 댓글 전용 (연보라 톤) */
+/* 👑 주인장 댓글 (연보라) */
 .comment-item.owner-comment {
     background: #f3effa;
     border: 1px solid #e0d5f5;
 }
 
-.comment-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 4px;
-}
-
-.comment-author {
-    font-weight: 600;
-    color: #1d1d1f;
-    font-size: 0.82rem;
-}
-
-/* 👑 주인장 뱃지 */
 .owner-badge {
     background: #6c5ce7;
     color: #ffffff;
@@ -254,10 +249,64 @@ textarea {
     font-weight: 500;
 }
 
+/* ✏️ 원작자 댓글 (핑크 톤) */
+.comment-item.author-comment {
+    background: #fff0f5;
+    border: 1px solid #ffd1dc;
+}
+
+.author-badge {
+    background: #ff6b81;
+    color: #ffffff;
+    font-size: 0.68rem;
+    padding: 2px 6px;
+    border-radius: 6px;
+    margin-left: 4px;
+    font-weight: 500;
+}
+
+/* 💬 답글(대댓글) 들여쓰기 스타일 */
+.comment-item.reply-item {
+    margin-left: 20px;
+    background: #f4f4f8;
+    border-left: 3px solid #8c52ff;
+}
+
+.reply-arrow {
+    color: #fd491c;
+    font-weight: bold;
+    margin-right: 2px;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.comment-author {
+    font-weight: 600;
+    color: #1d1d1f;
+    font-size: 0.82rem;
+}
+
 .comment-btn-group {
     display: flex;
-    gap: 4px;
+    align-items: center;
+    gap: 6px;
 }
+
+.reply-toggle-btn {
+    background: #e1e1ff;
+    color: #366bfd;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    padding: 2px 6px;
+    cursor: pointer;
+}
+.reply-toggle-btn:hover { background: #e0d5f5; }
 
 .comment-edit-btn, .comment-del-btn {
     background: none;
@@ -265,7 +314,7 @@ textarea {
     color: #8e8e93;
     cursor: pointer;
     font-size: 11px;
-    padding: 0 3px;
+    padding: 0 2px;
 }
 
 .comment-edit-btn:hover { color: #0071e3; }
@@ -273,19 +322,30 @@ textarea {
 
 .comment-content {
     color: #424245;
-    line-height: 1.4;
-    white-space: pre-wrap;
+    line-height: 1.45;
+    white-space: pre-wrap; /* 💡 줄바꿈 완벽 적용 */
+    word-break: break-all;
 }
 
-/* 💬 댓글 입력 폼 전체 (2줄 세로 정렬) */
-.comment-form {
+/* ==========================================
+   6. 💬 댓글/답글 입력창 (textarea 형태)
+   ========================================== */
+.comment-form, .reply-form {
     display: flex;
     flex-direction: column;
     gap: 8px;
     margin-top: 12px;
 }
 
-/* 1번째 줄: 닉네임 + 비밀번호 (5:5 비율) */
+.reply-form {
+    margin-left: 20px;
+    margin-bottom: 12px;
+    padding: 10px;
+    background: #f9f8fc;
+    border-radius: 10px;
+    border: 1px dashed #dcd3f0;
+}
+
 .comment-form-top {
     display: flex;
     gap: 8px;
@@ -293,49 +353,61 @@ textarea {
 
 .comment-form-top .comment-input {
     flex: 1;
-    min-width: 0; /* flex 영역 이탈 방지 */
+    min-width: 0;
 }
 
-/* 2번째 줄: 댓글 입력창 + 등록 버튼 */
 .comment-form-bottom {
     display: flex;
     gap: 8px;
 }
 
-.comment-input.text {
+/* 💡 줄바꿈 가능한 댓글 입력 텍스트상자 */
+.comment-textarea {
     flex: 1;
     min-width: 0;
+    height: 54px;
+    padding: 8px 10px;
+    border: 1px solid #e5e5ea;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    outline: none;
+    resize: vertical;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
 }
 
-/* 공통 입력창 스타일 */
+.comment-textarea:focus {
+    border-color: #8c52ff;
+    box-shadow: 0 0 0 3px rgba(140, 82, 255, 0.1);
+}
+
 .comment-input {
     border: 1px solid #e5e5ea;
-    border-radius: 12px;
-    padding: 10px 12px;
+    border-radius: 10px;
+    padding: 8px 10px;
     font-size: 0.85rem;
     outline: none;
     background: #ffffff;
-    transition: all 0.2s ease;
     box-sizing: border-box;
 }
 
 .comment-input:focus {
     border-color: #8c52ff;
-    box-shadow: 0 0 0 3px rgba(140, 82, 255, 0.1);
 }
 
-/* 댓글 등록 버튼 */
 .comment-submit-btn {
     background: #8c52ff;
     color: white;
     border: none;
-    border-radius: 12px;
-    padding: 10px 18px;
-    font-size: 0.85rem;
+    border-radius: 10px;
+    padding: 0 16px;
+    font-size: 0.82rem;
     font-weight: 500;
     cursor: pointer;
     white-space: nowrap;
     transition: background 0.2s, transform 0.1s;
+    height: 54px;
 }
 
 .comment-submit-btn:hover {
@@ -344,9 +416,9 @@ textarea {
 }
 
 /* ==========================================
-   6. 모바일 반응형 처리
+   7. 모바일 반응형 처리 (700px 기준)
    ========================================== */
-@media (max-width: 600px) {
+@media (max-width: 700px) {
     .container {
         margin-top: 50px;
     }

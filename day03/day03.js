@@ -27,7 +27,7 @@ function showQuote() {
 function showAccount() {
     const account = document.getElementById("account");
 
-    if (account.style.display === "none") {
+    if (account.style.display === "none" || account.style.display === "") {
         account.style.display = "block";
         account.innerHTML =
         `
@@ -60,50 +60,41 @@ function getGwangjuWeather() {
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            // 1. 데이터 파싱
             const temp = data.current.temperature_2m;
             const rain = data.current.precipitation;
 
-            // 2. 화면의 HTML 요소들 가져오기
             const resultContainer = document.getElementById("weatherResult");
             const iconElement = document.getElementById("weatherIcon");
             const tempElement = document.getElementById("weatherTemp");
             const statusElement = document.getElementById("weatherStatus");
 
-            // 3. 비 상태에 따라 아이콘과 텍스트 결정 (디자인 적용!)
             let iconCode = "";
             let rainStatus = "";
 
             if (rain > 0) {
-                // 비가 오면 회전하는 우산 아이콘 ☔
                 iconCode = "☔";
                 rainStatus = `비 내리는 중 (${rain} mm)`;
             } else {
-                // 비가 안 오면 회전하는 해 아이콘 ☀️
                 iconCode = "☀️";
                 rainStatus = `비 안 옴 (0 mm)`;
             }
 
-            // 4. 온드에 따라 색상 바꾸기 (보너스 디자인!)
             if (temp >= 25) {
-                tempElement.style.color = "#ff4757"; // 25도 이상이면 붉은색
+                tempElement.style.color = "#ff4757";
             } else if (temp <= 10) {
-                tempElement.style.color = "#2e86de"; // 10도 이하이면 푸른색
+                tempElement.style.color = "#2e86de";
             } else {
-                tempElement.style.color = "#333"; // 그 외에는 기본 검정색
+                tempElement.style.color = "#333";
             }
 
-            // 5. 화면에 최종 디자인 적용된 결과 출력
             iconElement.innerText = iconCode;
             tempElement.innerText = `${temp}°C`;
             statusElement.innerText = rainStatus;
             
-            // 결과 상자 보여주기 (처음엔 display:none 상태)
             resultContainer.style.display = "flex"; 
         })
         .catch(error => {
             console.error("날씨 데이터를 가져오는 중 에러 발생:", error);
-            // 에러 시엔 간단하게 텍스트로 표시
             document.getElementById("weatherResult").innerText = "날씨 정보를 불러오지 못했습니다. 😢";
             document.getElementById("weatherResult").style.display = "block";
         });

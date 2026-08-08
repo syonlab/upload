@@ -33,48 +33,44 @@
     <button onclick="showAccount()">💰 후원 💰</button>
     <div id="account"></div><br><br>
 
-   <!-- 부모 div 태그에 text-align: center 속성을 줍니다 -->
-<div style="text-align: center;">
-    <h2>🐶 오늘의 강아지 불러오기</h2>
-    <button onclick="getDogImage()"> 강아지 보기 ✨</button>
-    <br><br>
-    <!-- margin: 0 auto를 추가해서 이미지 자체도 중앙에 오게 만듭니다 -->
-    <img id="dogImage" src="" alt="강아지 이미지" style="max-width: 500px; display: none; margin: 0 auto;">
-<br>
-    <div class="weather-box" style="text-align: center;">
-    <h2>🌤️ 오늘의 광주 날씨</h2>
-    <button onclick="getGwangjuWeather()">날씨 확인하기 🌡️</button>
-    <br><br>
-    
-    <!-- 💡 아래 ID 이름들이 자바스크립트와 100% 일치해야 작동합니다! -->
-    <div id="weatherResult" class="weather-result-container" style="display: none;">
-        <!-- 1. 아이콘이 들어갈 자리 -->
-        <div id="weatherIcon" class="weather-icon"></div>
-        
-        <!-- 2. 온도와 상태 텍스트가 들어갈 자리 -->
-        <div class="weather-info">
-            <span id="weatherTemp" class="weather-temp"></span>
-            <span id="weatherStatus" class="weather-status"></span>
+    <div style="text-align: center;">
+        <h2>🐶 오늘의 강아지 불러오기</h2>
+        <button onclick="getDogImage()"> 강아지 보기 ✨</button>
+        <br><br>
+        <img id="dogImage" src="" alt="강아지 이미지" style="max-width: 500px; display: none; margin: 0 auto;">
+        <br>
+        <div class="weather-box" style="text-align: center;">
+            <h2>🌤️ 오늘의 광주 날씨</h2>
+            <button onclick="getGwangjuWeather()">날씨 확인하기 🌡️</button>
+            <br><br>
+            
+            <div id="weatherResult" class="weather-result-container" style="display: none;">
+                <div id="weatherIcon" class="weather-icon"></div>
+                <div class="weather-info">
+                    <span id="weatherTemp" class="weather-temp"></span>
+                    <span id="weatherStatus" class="weather-status"></span>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-<br>
-    <h2>🎵 오늘의 노래 추천 🎙️</h2><br>
-    <div class="video">
-        <iframe 
-            src="https://www.youtube.com/embed/PyaUHDys5Jg?si=_9IRTPcl34pwd-on"
-            title="YouTube video player"
-            allowfullscreen>
-        </iframe>
-    </div>
-    <p>
-        이번에 볼빨간 사춘기가 커버한 여름아 부탁해인데, <br>
-        여름에 정말 잘 어울리는 노래라서 추천할게요! ☀️
-    </p>
-<br>
-    <a class="back-home" href="../index.html">🏠 메인페이지 돌아가기</a>
+        <br>
+        <h2>🎵 오늘의 노래 추천 🎙️</h2><br>
+        <div class="video">
+            <iframe 
+                src="https://www.youtube.com/embed/PyaUHDys5Jg?si=_9IRTPcl34pwd-on"
+                title="YouTube video player"
+                allowfullscreen>
+            </iframe>
+        </div>
+        <p>
+            이번에 볼빨간 사춘기가 커버한 여름아 부탁해인데, <br>
+            여름에 정말 잘 어울리는 노래라서 추천할게요! ☀️
+        </p>
+        <br>
+        <a class="back-home" href="../index.html">🏠 메인페이지 돌아가기</a>
 
-    <script src="../js/script.js"></script>
-    <br><br><br><br>
+        <!-- 💡 js/script.js 대신 day03/day03.js로 연결 변경! -->
+        <script src="day03.js"></script>
+        <br><br><br><br>
+    </div>
 </body>
 </html>
