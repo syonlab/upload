@@ -8,8 +8,6 @@ import {
     deleteDoc, 
     updateDoc, 
     doc, 
-    query, 
-    orderBy, 
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
@@ -54,7 +52,6 @@ if (button) {
                 password: password,
                 message: message,
                 comments: [],
-                comments: [],
                 createdAt: serverTimestamp()
             });
 
@@ -79,18 +76,29 @@ async function renderGuestbook() {
     guestbook.innerHTML = "<p class='empty-msg'>방명록을 불러오는 중... ⏳</p>";
 
     try {
-        const q = query(collection(db, "guestbook"), orderBy("createdAt", "desc"));
-        const querySnapshot = await getDocs(q);
+        // 인덱스 에러 방지를 위해 먼저 가져온 후 자바스크립트로 최신순 정렬
+        const querySnapshot = await getDocs(collection(db, "guestbook"));
 
         if (querySnapshot.empty) {
             guestbook.innerHTML = `<p class="empty-msg">아직 방명록이 없습니다. 첫 남김의 주인공이 되어보세요! 🌸</p>`;
             return;
         }
 
-        let html = "";
+        // 문서 목록 가져와서 최신순 정렬 (createdAt 기준)
+        let docsArray = [];
         querySnapshot.forEach((docSnap) => {
-            const entry = docSnap.data();
-            const id = docSnap.id;
+            docsArray.push({ id: docSnap.id, ...docSnap.data() });
+        });
+
+        docsArray.sort((a, b) => {
+            const timeA = a.createdAt ? a.createdAt.toDate().getTime() : Date.now();
+            const timeB = b.createdAt ? b.createdAt.toDate().getTime() : Date.now();
+            return timeB - timeA; // 최신순
+        });
+
+        let html = "";
+        docsArray.forEach((entry) => {
+            const id = entry.id;
             const date = entry.createdAt ? new Date(entry.createdAt.toDate()).toLocaleDateString() : "방금 전";
             const comments = entry.comments || [];
 
@@ -200,13 +208,11 @@ window.addComment = async function(docId, postAuthorName, postPassword) {
         return;
     }
 
-    // 👑 주인장 체크
     const isOwner = (author === "시온" || author === "주인장") && (password === MASTER_PASSWORD);
-    // ✏️ 최초 게시글 작성자 체크 (동일한 닉네임 + 동일한 비밀번호)
     const isAuthor = (!isOwner) && (author === postAuthorName && password === postPassword);
 
     try {
-        const querySnapshot = await getDocs(query(collection(db, "guestbook")));
+        const querySnapshot = await getDocs(collection(db, "guestbook"));
         querySnapshot.forEach(async (docSnap) => {
             if (docSnap.id === docId) {
                 let comments = docSnap.data().comments || [];
@@ -230,7 +236,7 @@ window.addComment = async function(docId, postAuthorName, postPassword) {
     }
 };
 
-// 💬 6. 답글 입력창 토글 (보이기/숨기기)
+// 💬 6. 답글 입력창 토글
 window.toggleReplyForm = function(docId, commentIndex) {
     const form = document.getElementById(`reply-form-${docId}-${commentIndex}`);
     if (form) {
@@ -238,7 +244,7 @@ window.toggleReplyForm = function(docId, commentIndex) {
     }
 };
 
-// 💬 7. 답글(대댓글) 작성
+// 💬 7. 답글 작성
 window.addReply = async function(docId, targetCommentIndex) {
     const authorInput = document.getElementById(`reply-author-${docId}-${targetCommentIndex}`);
     const passwordInput = document.getElementById(`reply-password-${docId}-${targetCommentIndex}`);
@@ -254,7 +260,7 @@ window.addReply = async function(docId, targetCommentIndex) {
     }
 
     try {
-        const querySnapshot = await getDocs(query(collection(db, "guestbook")));
+        const querySnapshot = await getDocs(collection(db, "guestbook"));
         querySnapshot.forEach(async (docSnap) => {
             if (docSnap.id === docId) {
                 const entry = docSnap.data();
@@ -273,7 +279,6 @@ window.addReply = async function(docId, targetCommentIndex) {
                     createdAt: new Date().toISOString()
                 };
 
-                // 해당 댓글 바로 뒤에 답글 삽입
                 comments.splice(targetCommentIndex + 1, 0, newReply);
 
                 await updateDoc(doc(db, "guestbook", docId), { comments: comments });
@@ -296,7 +301,7 @@ window.editComment = async function(docId, commentIndex, originalPassword) {
 
         if (newContent && newContent.trim() !== "") {
             try {
-                const querySnapshot = await getDocs(query(collection(db, "guestbook")));
+                const querySnapshot = await getDocs(collection(db, "guestbook"));
                 querySnapshot.forEach(async (docSnap) => {
                     if (docSnap.id === docId) {
                         let comments = docSnap.data().comments || [];
@@ -324,7 +329,7 @@ window.deleteComment = async function(docId, commentIndex, originalPassword) {
     if (inputPassword === originalPassword || inputPassword === MASTER_PASSWORD) {
         if (confirm("삭제하시겠습니까?")) {
             try {
-                const querySnapshot = await getDocs(query(collection(db, "guestbook")));
+                const querySnapshot = await getDocs(collection(db, "guestbook"));
                 querySnapshot.forEach(async (docSnap) => {
                     if (docSnap.id === docId) {
                         let comments = docSnap.data().comments || [];
@@ -347,7 +352,6 @@ window.deleteComment = async function(docId, commentIndex, originalPassword) {
 // 10. 방명록 글 삭제/수정
 window.deleteEntry = async function(id, originalPassword) {
     const inputPassword = prompt("비밀번호를 입력하세요:");
-    const inputPassword = prompt("비밀번호를 입력하세요:");
     if (!inputPassword) return;
 
     if (inputPassword === originalPassword || inputPassword === MASTER_PASSWORD) {
@@ -362,7 +366,6 @@ window.deleteEntry = async function(id, originalPassword) {
 };
 
 window.editEntry = async function(id, originalPassword) {
-    const inputPassword = prompt("비밀번호를 입력하세요:");
     const inputPassword = prompt("비밀번호를 입력하세요:");
     if (!inputPassword) return;
 
@@ -381,7 +384,6 @@ window.editEntry = async function(id, originalPassword) {
 };
 
 function escapeHtml(text) {
-    if (!text) return "";
     if (!text) return "";
     return text
         .replace(/&/g, "&amp;")
