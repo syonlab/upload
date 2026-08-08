@@ -361,3 +361,28 @@ function updateNicknameDisplays(nick) {
     const sidebarNick = document.getElementById("sidebar-nickname");
     if (sidebarNick) sidebarNick.innerText = nick;
 }
+// 🤖 제미나이 사이드바 토글 함수
+function toggleGeminiSidebar() {
+    // 1. ID로 사이드바 찾기
+    let sidebar = document.getElementById('gemini-sidebar');
+    
+    // 2. 만약 ID로 못 찾으면 클래스명(.gemini-sidebar)으로 한 번 더 찾아봄 (안전장치)
+    if (!sidebar) {
+        sidebar = document.querySelector('.gemini-sidebar');
+    }
+
+    // 3. 그래도 없으면 에러 출력 후 종료
+    if (!sidebar) {
+        console.error("HTML에서 사이드바 요소를 찾을 수 없습니다. <aside id='gemini-sidebar'> 태그를 확인해주세요.");
+        return;
+    }
+
+    // 4. 화면 크기에 따른 사이드바 열기/접기 토글
+    if (window.innerWidth <= 768) {
+        sidebar.classList.toggle('active');
+    } else {
+        sidebar.classList.toggle('collapsed');
+    }
+}
+
+

@@ -11,11 +11,16 @@
 </head>
 <body>
 
-    <!-- 🤖 제미나이 사이드바 -->
-    <aside class="gemini-sidebar">
-        <div class="sidebar-top">
-            <button class="menu-btn">☰</button>
+    <!-- 🤖 제미나이 사이드바 (JS 연결용 id 추가) -->
+   <aside class="gemini-sidebar" id="gemini-sidebar">
+   <div class="sidebar-top">
+
+            <!-- 기존 ☰ 버튼에 클릭 이벤트 추가 -->
+
+            <button class="menu-btn" onclick="toggleGeminiSidebar()">☰</button>
+
             <button class="new-chat-btn">+ 새 대화</button>
+
         </div>
         <div class="sidebar-history">
             <div class="history-item"> 새 채팅 </div>
@@ -24,7 +29,7 @@
             <div class="history-item"> 라이브러리 </div>
             ----------------------
             <div class="history-item active"> 업무 </div>
-            <div class="history-item"> 엑셀함수 </div>
+            <div class="history-item"> 질문 </div>
         </div>
         <div class="sidebar-bottom">
             <div class="user-profile">
@@ -57,9 +62,12 @@
 
         <!-- 헤더 영역 -->
         <header class="chat-header">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <!-- 🏠 상단 헤더 홈 버튼만 유지 -->
-                <a href="../../index.html" class="header-home-btn" title="메인 홈으로 이동">🏠 홈</a>
+            <div style="display: flex; align-items: center; gap: 8px;">
+        <!-- 1. 사이드바가 접혔을 때만 보이는 '펼치기' ☰ 버튼 (새로 추가) -->
+        <button class="menu-btn sidebar-open-btn" onclick="toggleGeminiSidebar()" title="사이드바 열기">☰</button>
+                
+                <!-- 🏠 상단 헤더 홈 버튼 -->
+                <a href="../../index.html" class="header-home-btn" title="메인 홈으로 이동">🏠</a>
                 <div>
                     <h2>💬 SYON 채팅</h2>
                     <div class="user-status">현재 접속: <strong id="current-nickname-display">-</strong></div>
