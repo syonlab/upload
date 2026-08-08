@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Chat - 비밀 채팅방</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-purple">
+
+    <!-- 🏠 1. 홈페이지 (방 생성 및 목록) -->
+    <div id="home-screen" class="home-container">
+        <div class="site-home-bar">
+        <a href="/" class="site-home-btn">🏠 홈으로</a>
+        <!-- 만약 이동하려는 메인 페이지 경로가 다르면 href="/index.html" 또는 "https://..." 으로 변경하세요 -->
+    </div>
+        <header class="home-header">
+            <h1>🔒 Personal Chat</h1>
+            <p>방 생성 코드로 나만의 1:1 및 비밀 그룹 채팅방을 만들어보세요.</p>
+        </header>
+
+        <!-- 새 방 만들기 카드 -->
+        <div class="create-room-card">
+            <h3>✨ 새 비밀 방 만들기</h3>
+            <div class="input-group">
+                <input type="text" id="new-room-title" placeholder="방 이름 (예: 포차코 방)">
+                <input type="password" id="new-room-pass" placeholder="방 코드 / 비밀번호 (예: 1234)">
+                <button onclick="createRoom()" class="create-btn">방 생성하기</button>
+            </div>
+        </div>
+
+        <!-- 방 목록 -->
+        <div class="room-list-section">
+            <h3>💬 참여 가능한 채팅방 목록</h3>
+            <div id="room-list" class="room-grid">
+                <!-- 자바스크립트로 방 목록이 자동 생성됨 -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 💬 2. 메인 채팅 화면 (기존 디자인 및 사이드바 포함) -->
+    <div id="chat-screen" class="main-wrapper" style="display: none;">
+        
+    <!-- 🤖 제미나이용 사이드바 -->
+<aside class="gemini-sidebar" id="gemini-sidebar">
+    <div class="sidebar-top">
+        <!-- 1. 사이드바 접기/펼치기 버튼만 남김 -->
+        <button class="menu-btn" onclick="toggleGeminiSidebar()" title="사이드바 열기/접기">☰</button>
+        
+        <!-- 2. 🏠 홈 버튼 삭제됨 -->
+        
+        <!-- 3. + 새 대화 (onclick 동작 제거: 단순 디자인용) -->
+        <button class="new-chat-btn">+ 새 대화</button>
+    </div>
+    <div class="sidebar-history">
+        <div class="history-item active">🔒 <span id="sidebar-room-title">포차코방</span></div>
+    </div>
+    <div class="sidebar-bottom">
+        <span class="user-profile">👤 <span class="sidebar-username">익명</span></span>
+    </div>
+</aside>
+
+        <!-- 채팅 메인 컨테이너 -->
+        <div class="chat-container">
+           <!-- 📊 엑셀 모드 전용 상단 메뉴바 & 수식 입력줄 (엑셀 모드일 때만 보임) -->
+    <div class="excel-top-menu">
+        <div class="excel-ribbon-tabs">
+            <span class="excel-tab active">파일</span>
+            <span class="excel-tab">홈</span>
+            <span class="excel-tab">삽입</span>
+            <span class="excel-tab">페이지 레이아웃</span>
+            <span class="excel-tab">수식</span>
+            <span class="excel-tab">데이터</span>
+        </div>
+        <div class="excel-formula-bar">
+            <span class="fx-icon">fx</span>
+            <input type="text" value="=SUM(A1:A100) / CHAT_DATA_RECORD" readonly>
+        </div>
+    </div>
+            <!-- 채팅 헤더 -->
+            <div class="chat-header">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button class="menu-btn sidebar-open-btn" onclick="toggleGeminiSidebar()" title="사이드바 열기">☰</button>
+                    <button onclick="leaveRoom()" class="header-home-btn">⭐메인으로</button>
+                    <h2 id="current-room-title">채팅방</h2>
+                    <span id="room-code-badge" class="private-banner">🔒 코드: ****</span>
+                </div>
+
+                <div class="header-actions">
+                    <!-- 테마 선택 드롭다운 -->
+                    <select id="theme-select" onchange="changeTheme(this.value)">
+                        <option value="purple">💜 기본 퍼플</option>
+                        <option value="gemini">🤖 제미나이</option>
+                        <option value="excel">📊 엑셀 모드</option>
+                    </select>
+
+                    <!-- 닉네임 변경 버튼 -->
+                    <button class="nickname-btn" onclick="openNicknameModal()">👤 <span id="header-nickname">익명</span></button>
+                </div>
+            </div>
+
+            <!-- 메시지 출력 구역 -->
+            <div class="chat-messages" id="chat-messages">
+                <!-- 메시지 항목들이 들어감 -->
+            </div>
+
+            <!-- 이미지 미리보기 영역 -->
+            <div id="image-preview-bar" class="preview-bar" style="display: none;">
+                <img id="preview-img" src="" alt="미리보기">
+                <button onclick="cancelImageUpload()" class="cancel-preview-btn">✕</button>
+            </div>
+
+            <!-- 채팅 입력창 -->
+            <div class="chat-input-area">
+                <div class="input-wrapper">
+                    <!-- 이미지 업로드 버튼 -->
+                    <label for="file-input" class="gemini-add-btn" title="이미지 첨부">+</label>
+                    <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="handleImageSelect(event)">
+                    
+                    <input type="text" id="message-input" placeholder="메시지를 입력하세요..." onkeyup="if(event.key==='Enter') sendMessage()">
+                    <button class="send-btn" onclick="sendMessage()">전송</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 🔐 모달 1: 방 입장 비밀번호 입력 -->
+    <div id="pass-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+            <h3 id="modal-room-title">방 제목</h3>
+            <p>이 방에 입장하려면 방 생성 코드를 입력해주세요.</p>
+            <input type="password" id="input-room-pass" placeholder="방 코드 (비밀번호)" onkeyup="if(event.key==='Enter') verifyAndEnterRoom()">
+            <div style="display: flex; gap: 8px; margin-top: 14px;">
+                <button onclick="closePassModal()" class="edit-cancel-btn" style="flex:1;">취소</button>
+                <button onclick="verifyAndEnterRoom()" class="modal-confirm-btn" style="flex:1;">입장하기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 👤 모달 2: 닉네임 변경 -->
+    <div id="nickname-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+            <h3>👤 닉네임 설정</h3>
+            <input type="text" id="input-nickname" placeholder="새 닉네임 입력" onkeyup="if(event.key==='Enter') saveNickname()">
+            <div style="display: flex; gap: 8px; margin-top: 14px;">
+                <button onclick="closeNicknameModal()" class="edit-cancel-btn" style="flex:1;">취소</button>
+                <button onclick="saveNickname()" class="modal-confirm-btn" style="flex:1;">저장</button>
+            </div>
+        </div>
+    </div>
+<!-- 닉네임 모달 등 기존 모달 아래, JS 불러오기 바로 위 -->
+
+    <!-- 🔥 Firebase SDK (v9+ Compatibility build) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+    <!-- 내 메인 자바스크립트 -->
+    <script src="personalchat.js"></script>
+</body>
+</html>

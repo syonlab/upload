@@ -344,3 +344,24 @@ button:hover {
 .chat-btn:active {
     transform: translateY(-1px) scale(0.98); /* 클릭 시 쫀득하게 눌리는 효과 */
 }
+
+/* ==========================================
+   3. 🔒 개인채팅 전용 스타일
+   ========================================== */
+.personalchat-btn {
+    background: linear-gradient(135deg, #ff7eb3, #ff758c); /* 🌸 화사한 핑크 그라데이션 */
+    color: #ffffff;
+    padding: 14px 24px;
+    border-radius: 50px; /* 동글동글 귀여운 모양 */
+    font-size: 1rem;
+    box-shadow: 0 6px 18px rgba(255, 117, 140, 0.4); /* 부드러운 핑크 그림자 */
+    transition: all 0.3s ease;
+}
+.chat-btn:hover {
+    background: linear-gradient(135deg, #ff65a3, #ff5277);
+    transform: translateY(-3px) scale(1.02); /* 살짝 커지면서 올라가는 효과 */
+    box-shadow: 0 10px 22px rgba(255, 117, 140, 0.55);
+}
+.personalchat-btn:active {
+    transform: translateY(-1px) scale(0.98); /* 클릭 시 쫀득하게 눌리는 효과 */
+}
